@@ -50,42 +50,71 @@ public class GUI {
 		grille = new GridPane();
 		stage = new Stage();
 		scene = new Scene(grille);
-		//on crée les boutons
+		
+		//on crée les boutons 
 		zero = new Button("0"); 
+		zero.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial; ");
+		//largeur et hauteur du bouton, police et taille de l'écriture
 		un = new Button ("1");
+		un.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
 		deux = new Button ("2");
+		deux.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
 		trois = new Button("3");
+		trois.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
 		quatre = new Button("4");
-		cinq = new Button("5"); 
+		quatre.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
+		cinq = new Button("5");
+		cinq.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
 		six = new Button ("6");
+		six.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
 		sept = new Button ("7");
+		sept.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
 		huit = new Button("8");
+		huit.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
 		neuf = new Button("9");
-		annuler = new Button("C");
+		neuf.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
+		
+		
+		annuler = new Button("C");//pas utilisé encore--> c'est pas swap?
+		annuler.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
 		add = new Button("+");
+		add.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial bold; -fx-text-fill :#1E90FF;");//texte en bleu
 		sous = new Button("-");
-		mult = new Button("x");
+		sous.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial; -fx-text-fill :#1E90FF;");
+		mult = new Button("×");
+		mult.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial; -fx-text-fill :#1E90FF;");
 		div = new Button("/");
+		div.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial; -fx-text-fill :#1E90FF;");
 		virg = new Button(".");
+		virg.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial; -fx-text-fill :#1E90FF;");
 		neg = new Button("+/-"); //change le signe
+		neg.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 12 arial; -fx-text-fill :#1E90FF;");
+		
 		empiler = new Button("OK"); //permet de push sur la pile le nombre écrit
+		empiler.setStyle("-fx-pref-width: 160px; -fx-pref-height: 20px; -fx-font-size: 14 arial; -fx-text-fill :#0000FF");
 		nettoyer = new Button("Clear"); //reset de la calculette
+		nettoyer.setStyle("-fx-pref-width: 160px; -fx-pref-height: 20px; -fx-font-size: 14 arial; -fx-text-fill :#0000FF");
 		echanger = new Button("Swap"); //swap les deux derniers push
+		echanger.setStyle("-fx-pref-width: 160px; -fx-pref-height: 20px; -fx-font-size: 14 arial; -fx-text-fill :#0000FF");
 		//on crée les labels (ie les zones de textes).
 		//pour l'instant ils sont vides, nous pourrons mettre le texte voulu plus tard grâce à setText(string)
-		labelp1 = new Label(); //push n°1
-		labelp2 = new Label(); //push n°2
-		labelr = new Label(); //resultat de l'opération
+		
+		labelp1 = new Label("test1"); //push n°1
+		labelp1.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 14 arial; -fx-border-color: #000000; -fx-border-width: 0.25px;");//label encadré
+		labelp2 = new Label("test2"); //push n°2
+		labelp2.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 14 arial; -fx-border-color: #000000; -fx-border-width: 0.25px;");
+		labelr = new Label("test3"); //resultat de l'opération
+		labelr.setStyle("-fx-pref-width: 80px; -fx-pref-height: 40px; -fx-font-size: 14 arial; -fx-border-color: #000000; -fx-border-width: 0.25px;");
 	}
 	//maintenant on a tous nos attributs
 	
 	public void initialiser() { //initialisation de l'interface
 		stage.setTitle("Calculatrice");
-		grille.setPadding(new Insets(200,200,200,200)); //taille de la fenêtre
+		grille.setPadding(new Insets (10, 50, 10, 50)); //taille de la fenêtre par rapport à la grille (espacement entre grille et fenetre)
 		//on ajoute tous les boutons au gridpane
-		grille.add(labelp1, 0, 0);
-		grille.add(labelp2, 1, 0);
-		grille.add(labelr, 2, 0, 2,1); // la zone de texte a une envergure de 2 colonnes x 1 ligne
+		grille.add(labelp1, 0, 0, 1, 1);//(position sur colonne, sur ligne, nb de colonnes, nb lignes)
+		grille.add(labelp2, 1, 0, 1, 1);
+		grille.add(labelr, 2, 0, 2, 1); // la zone de texte a une envergure de 2 colonnes x 1 ligne
 		grille.add(sept, 0, 1);
 		grille.add(huit, 1, 1);
 		grille.add(neuf, 2, 1);
@@ -105,7 +134,7 @@ public class GUI {
 		grille.add(echanger, 0, 5, 4 ,1);
 		grille.add(empiler, 0, 6, 4 ,1); //le bouton a une envergure de 4 colonnes x 1 ligne
 		grille.add(nettoyer, 0, 7, 4 ,1); //le bouton a une envergure de 4 colonnes x 1 ligne
-		grille.getChildren().addAll(); // je ne sais pas s'il faut le mettre ni à quoi ça sert vraiment lol
+		grille.getChildren().addAll(); // je ne sais pas s'il faut le mettre ni à quoi ça sert vraiment lol (les children de la grille c'est les boutons apparemment
 		afficher();
 		} 
 	
@@ -114,8 +143,3 @@ public class GUI {
 		stage.show();
 	}
 }
-	
-	
-	   
-	
-
