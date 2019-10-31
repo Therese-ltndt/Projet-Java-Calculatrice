@@ -1,0 +1,22 @@
+package controleur;
+
+
+
+import calculette_code.Accumulateur;
+import calculette_interface.GUI;
+
+public class Controleur {
+	
+	GUI gui;
+	Accumulateur accumulateur;
+	
+	
+	public Controleur(Accumulateur accu, GUI ihm) {
+		gui = ihm;
+		accumulateur = accu ;
+	}
+	
+		
+	}
+
+
