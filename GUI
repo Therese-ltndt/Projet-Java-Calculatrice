@@ -1,0 +1,121 @@
+package calculette_interface;
+
+import javafx.scene.control.Button;
+import java.util.List;
+
+import controleur.Controleur;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene; 
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane; 
+import javafx.stage.Stage;
+
+public class GUI {
+
+	//Controleur controleur; à voir si on en a besoin //le controleur va faire le lien entre le GUI et l'accumulateur
+	GridPane grille;
+	Stage stage;
+	Scene scene;
+	
+	//on crée les boutons
+	Button zero;
+	Button un;
+	Button deux;
+	Button trois;
+	Button quatre;
+	Button cinq; 
+	Button six;
+	Button sept;
+	Button huit;
+	Button neuf;
+	Button annuler;
+	Button add;
+	Button sous;
+	Button mult;
+	Button div;
+	Button virg;
+	Button neg ; //change le signe
+	Button empiler; //permet de push sur la pile le nombre écrit
+	Button nettoyer; //reset de la calculette
+	Button echanger; //swap les deux derniers push
+	//on crée les labels (ie les zones de textes).
+	Label labelp1 ; //push n°1
+	Label labelp2 ; //push n°2
+	Label labelr; //resultat de l'opération
+
+	public GUI() {
+		//controleur = new Controleur();
+		grille = new GridPane();
+		stage = new Stage();
+		scene = new Scene(grille);
+		//on crée les boutons
+		zero = new Button("0"); 
+		un = new Button ("1");
+		deux = new Button ("2");
+		trois = new Button("3");
+		quatre = new Button("4");
+		cinq = new Button("5"); 
+		six = new Button ("6");
+		sept = new Button ("7");
+		huit = new Button("8");
+		neuf = new Button("9");
+		annuler = new Button("C");
+		add = new Button("+");
+		sous = new Button("-");
+		mult = new Button("x");
+		div = new Button("/");
+		virg = new Button(".");
+		neg = new Button("+/-"); //change le signe
+		empiler = new Button("OK"); //permet de push sur la pile le nombre écrit
+		nettoyer = new Button("Clear"); //reset de la calculette
+		echanger = new Button("Swap"); //swap les deux derniers push
+		//on crée les labels (ie les zones de textes).
+		//pour l'instant ils sont vides, nous pourrons mettre le texte voulu plus tard grâce à setText(string)
+		labelp1 = new Label(); //push n°1
+		labelp2 = new Label(); //push n°2
+		labelr = new Label(); //resultat de l'opération
+	}
+	//maintenant on a tous nos attributs
+	
+	public void initialiser() { //initialisation de l'interface
+		stage.setTitle("Calculatrice");
+		grille.setPadding(new Insets(200,200,200,200)); //taille de la fenêtre
+		//on ajoute tous les boutons au gridpane
+		grille.add(labelp1, 0, 0);
+		grille.add(labelp2, 1, 0);
+		grille.add(labelr, 2, 0, 2,1); // la zone de texte a une envergure de 2 colonnes x 1 ligne
+		grille.add(sept, 0, 1);
+		grille.add(huit, 1, 1);
+		grille.add(neuf, 2, 1);
+		grille.add(add, 3, 1);
+		grille.add(quatre, 0, 2);
+		grille.add(cinq, 1, 2);
+		grille.add(six, 2, 2);
+		grille.add(sous, 3, 2);
+		grille.add(un, 0, 3);
+		grille.add(deux, 1, 3);
+		grille.add(trois, 2, 3);
+		grille.add(mult, 3, 3);
+		grille.add(neg, 0, 4);
+		grille.add(zero, 1, 4);
+		grille.add(virg, 2, 4);
+		grille.add(div, 3, 4);
+		grille.add(echanger, 0, 5, 4 ,1);
+		grille.add(empiler, 0, 6, 4 ,1); //le bouton a une envergure de 4 colonnes x 1 ligne
+		grille.add(nettoyer, 0, 7, 4 ,1); //le bouton a une envergure de 4 colonnes x 1 ligne
+		grille.getChildren().addAll(); // je ne sais pas s'il faut le mettre ni à quoi ça sert vraiment lol
+		afficher();
+		} 
+	
+	public void afficher() {
+		stage.setScene(scene);
+		stage.show();
+	}
+}
+	
+	
+	   
+	
+
