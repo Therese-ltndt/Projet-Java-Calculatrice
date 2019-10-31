@@ -1,0 +1,91 @@
+package calculette_code;
+import controleur.Controleur;
+
+public class Accumulateur implements IAccumulateur {
+
+	Pile memory;
+	String entry ;
+	double nombre; //resultat de l'opération (addition, soustraction...) que l'on réinitialise à chaque fin d'opération OU lecture de la chaine string
+	//Controleur controleur; est ce qu'on en a besoin?
+	
+	public Accumulateur() {
+		memory = new Pile();
+		entry = "";
+		nombre = 0;
+	}
+	
+	public double StringtoDouble(String s) {
+		double nb = Double.parseDouble(s) ;
+		return nb;
+	}
+	
+	public void push() {
+		memory.push(nombre);
+	}
+	
+	public void drop(){
+		double a = memory.pop();
+	}
+	
+	public void swap() {
+		double d1 = memory.pop();
+		double d2= memory.pop();
+		memory.push(d1);
+		memory.push(d2);
+	}
+	
+	public void add() {
+		double d1 = memory.pop();
+		double d2= memory.pop();
+		nombre = d1 + d2;
+		push();
+	}
+	
+	public void sub() {
+		double d1 = memory.pop();
+		double d2= memory.pop();
+		nombre = d2 - d1;
+		push();
+	}
+	
+	public void mult() {
+		double d1 = memory.pop();
+		double d2= memory.pop();
+		nombre = d1 * d2;
+		push();
+	}
+	
+	public void div() {
+		double d1 = memory.pop();
+		double d2= memory.pop();
+		nombre = d2 / d1;
+		push();
+	}
+	
+	public void neg() {
+		double d1 = memory.pop();
+		nombre = -d1;
+		push();
+	}
+	
+	public void backspace() {
+		int n = entry.length();
+		if (n>=2) {
+			entry.substring(0, n-2);}
+		else {
+			entry = "";
+		}
+	}
+	
+	public void accumuler(char character ) {
+		entry += character;
+	}
+	
+	public void reset() {
+		entry = "";
+		nombre = 0;
+		memory.clear();
+	}
+	
+	
+}
