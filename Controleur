@@ -1,22 +1,358 @@
-package controleur;
+package calculette_interface;
 
-
+import javafx.scene.control.Button;
+import java.util.List;
 
 import calculette_code.Accumulateur;
-import calculette_interface.GUI;
+import controleur.Controleur;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene; 
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane; 
+import javafx.stage.Stage;
 
-public class Controleur {
+public class GUI {
+
+	//Controleur controleur; à voir si on en a besoin //le controleur va faire le lien entre le GUI et l'accumulateur
+	GridPane grille;
+	Stage stage;
+	Scene scene;
 	
-	GUI gui;
-	Accumulateur accumulateur;
-	
-	
-	public Controleur(Accumulateur accu, GUI ihm) {
-		gui = ihm;
-		accumulateur = accu ;
-	}
-	
+	//on crée les boutons
+	Button zero;
+	Button un;
+	Button deux;
+	Button trois;
+	Button quatre;
+	Button cinq; 
+	Button six;
+	Button sept;
+	Button huit;
+	Button neuf;
+	Button annuler;
+	Button add;
+	Button sous;
+	Button mult;
+	Button div;
+	Button virg;
+	Button neg ; //change le signe
+	Button empiler; //permet de push sur la pile le nombre écrit
+	Button nettoyer; //reset de la calculette
+	Button echanger; //swap les deux derniers push
+	//on crée les labels (ie les zones de textes).
+	Label labelp1 ; //push n°1
+	Label labelp2 ; //push n°2
+	Label labelr; //resultat de l'opération
+
+	public GUI() {
+		//controleur = new Controleur();
+		grille = new GridPane();
+		stage = new Stage();
+		scene = new Scene(grille);
 		
+		//on crée les boutons 
+		zero = new Button("0"); 
+		zero.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial; ");
+		//largeur et hauteur du bouton, police et taille de l'écriture
+		un = new Button ("1");
+		un.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
+		deux = new Button ("2");
+		deux.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
+		trois = new Button("3");
+		trois.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
+		quatre = new Button("4");
+		quatre.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
+		cinq = new Button("5");
+		cinq.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
+		six = new Button ("6");
+		six.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
+		sept = new Button ("7");
+		sept.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
+		huit = new Button("8");
+		huit.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
+		neuf = new Button("9");
+		neuf.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
+		
+		annuler = new Button("C");//pas utilisé encore--> c'est pas swap?
+		annuler.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial;");
+		add = new Button("+");
+		add.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial bold; -fx-text-fill :#1E90FF;");//texte en bleu
+		sous = new Button("-");
+		sous.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial; -fx-text-fill :#1E90FF;");
+		mult = new Button("×");
+		mult.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial; -fx-text-fill :#1E90FF;");
+		div = new Button("/");
+		div.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial; -fx-text-fill :#1E90FF;");
+		virg = new Button(".");
+		virg.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial; -fx-text-fill :#1E90FF;");
+		neg = new Button("+/-"); //change le signe
+		neg.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 12 arial; -fx-text-fill :#1E90FF;");
+		
+		empiler = new Button("OK"); //permet de push sur la pile le nombre écrit
+		empiler.setStyle("-fx-pref-width: 160px; -fx-pref-height: 20px; -fx-font-size: 14 arial; -fx-text-fill :#0000FF");
+		nettoyer = new Button("Clear"); //reset de la calculette
+		nettoyer.setStyle("-fx-pref-width: 160px; -fx-pref-height: 20px; -fx-font-size: 14 arial; -fx-text-fill :#0000FF");
+		echanger = new Button("Swap"); //swap les deux derniers push
+		echanger.setStyle("-fx-pref-width: 160px; -fx-pref-height: 20px; -fx-font-size: 14 arial; -fx-text-fill :#0000FF");
+		//on crée les labels (ie les zones de textes).
+		//pour l'instant ils sont vides, nous pourrons mettre le texte voulu plus tard grâce à setText(string)
+		
+		labelp1 = new Label(""); //push n°1
+		labelp1.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 14 arial; -fx-border-color: #000000; -fx-border-width: 0.25px;");//label encadré
+		labelp2 = new Label(""); //push n°2
+		labelp2.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 14 arial; -fx-border-color: #000000; -fx-border-width: 0.25px;");
+		labelr = new Label(""); //resultat de l'opération
+		labelr.setStyle("-fx-pref-width: 80px; -fx-pref-height: 40px; -fx-font-size: 14 arial; -fx-border-color: #000000; -fx-border-width: 0.25px;");
+	}
+	
+	//maintenant on a tous nos attributs
+	
+	public void initialiser() { //initialisation de l'interface
+		stage.setTitle("Calculatrice");
+		grille.setPadding(new Insets (10, 50, 10, 50)); //taille de la fenêtre par rapport à la grille (espacement entre grille et fenetre)
+		
+		//on ajoute tous les boutons au gridpane
+		grille.add(labelp1, 0, 0, 1, 1);//(position sur colonne, sur ligne, nb de colonnes, nb lignes)
+		grille.add(labelp2, 1, 0, 1, 1);
+		grille.add(labelr, 2, 0, 2, 1); // la zone de texte a une envergure de 2 colonnes x 1 ligne
+		grille.add(sept, 0, 1);
+		grille.add(huit, 1, 1);
+		grille.add(neuf, 2, 1);
+		grille.add(add, 3, 1);
+		grille.add(quatre, 0, 2);
+		grille.add(cinq, 1, 2);
+		grille.add(six, 2, 2);
+		grille.add(sous, 3, 2);
+		grille.add(un, 0, 3);
+		grille.add(deux, 1, 3);
+		grille.add(trois, 2, 3);
+		grille.add(mult, 3, 3);
+		grille.add(neg, 0, 4);
+		grille.add(zero, 1, 4);
+		grille.add(virg, 2, 4);
+		grille.add(div, 3, 4);
+		grille.add(echanger, 0, 5, 4 ,1);
+		grille.add(empiler, 0, 6, 4 ,1); //le bouton a une envergure de 4 colonnes x 1 ligne
+		grille.add(nettoyer, 0, 7, 4 ,1); //le bouton a une envergure de 4 colonnes x 1 ligne
+		grille.getChildren().addAll(); // je ne sais pas s'il faut le mettre ni à quoi ça sert vraiment lol (les children de la grille c'est les boutons apparemment
+		afficher();
+		} 
+	
+	
+	public void afficher() {
+		stage.setScene(scene);
+		stage.show();
+	}
+	
+	//getters et setters
+	public GridPane getGrille() {
+		return grille;
 	}
 
+	public void setGrille(GridPane grille) {
+		this.grille = grille;
+	}
+
+	public Stage getStage() {
+		return stage;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
+
+	public Scene getScene() {
+		return scene;
+	}
+
+	public void setScene(Scene scene) {
+		this.scene = scene;
+	}
+
+	public Button getZero() {
+		return zero;
+	}
+
+	public void setZero(Button zero) {
+		this.zero = zero;
+	}
+
+	public Button getUn() {
+		return un;
+	}
+
+	public void setUn(Button un) {
+		this.un = un;
+	}
+
+	public Button getDeux() {
+		return deux;
+	}
+
+	public void setDeux(Button deux) {
+		this.deux = deux;
+	}
+
+	public Button getTrois() {
+		return trois;
+	}
+
+	public void setTrois(Button trois) {
+		this.trois = trois;
+	}
+
+	public Button getQuatre() {
+		return quatre;
+	}
+
+	public void setQuatre(Button quatre) {
+		this.quatre = quatre;
+	}
+
+	public Button getCinq() {
+		return cinq;
+	}
+
+	public void setCinq(Button cinq) {
+		this.cinq = cinq;
+	}
+
+	public Button getSix() {
+		return six;
+	}
+
+	public void setSix(Button six) {
+		this.six = six;
+	}
+
+	public Button getSept() {
+		return sept;
+	}
+
+	public void setSept(Button sept) {
+		this.sept = sept;
+	}
+
+	public Button getHuit() {
+		return huit;
+	}
+
+	public void setHuit(Button huit) {
+		this.huit = huit;
+	}
+
+	public Button getNeuf() {
+		return neuf;
+	}
+
+	public void setNeuf(Button neuf) {
+		this.neuf = neuf;
+	}
+
+	public Button getAnnuler() {
+		return annuler;
+	}
+
+	public void setAnnuler(Button annuler) {
+		this.annuler = annuler;
+	}
+
+	public Button getAdd() {
+		return add;
+	}
+
+	public void setAdd(Button add) {
+		this.add = add;
+	}
+
+	public Button getSous() {
+		return sous;
+	}
+
+	public void setSous(Button sous) {
+		this.sous = sous;
+	}
+
+	public Button getMult() {
+		return mult;
+	}
+
+	public void setMult(Button mult) {
+		this.mult = mult;
+	}
+
+	public Button getDiv() {
+		return div;
+	}
+
+	public void setDiv(Button div) {
+		this.div = div;
+	}
+
+	public Button getVirg() {
+		return virg;
+	}
+
+	public void setVirg(Button virg) {
+		this.virg = virg;
+	}
+
+	public Button getNeg() {
+		return neg;
+	}
+
+	public void setNeg(Button neg) {
+		this.neg = neg;
+	}
+
+	public Button getEmpiler() {
+		return empiler;
+	}
+
+	public void setEmpiler(Button empiler) {
+		this.empiler = empiler;
+	}
+
+	public Button getNettoyer() {
+		return nettoyer;
+	}
+
+	public void setNettoyer(Button nettoyer) {
+		this.nettoyer = nettoyer;
+	}
+
+	public Button getEchanger() {
+		return echanger;
+	}
+
+	public void setEchanger(Button echanger) {
+		this.echanger = echanger;
+	}
+
+	public Label getLabelp1() {
+		return labelp1;
+	}
+
+	public void setLabelp1(Label labelp1) {
+		this.labelp1 = labelp1;
+	}
+
+	public Label getLabelp2() {
+		return labelp2;
+	}
+
+	public void setLabelp2(Label labelp2) {
+		this.labelp2 = labelp2;
+	}
+
+	public Label getLabelr() {
+		return labelr;
+	}
+
+	public void setLabelr(Label labelr) {
+		this.labelr = labelr;
+	}
+}
 
