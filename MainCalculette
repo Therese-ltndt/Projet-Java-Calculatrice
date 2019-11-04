@@ -13,8 +13,6 @@ import javafx.stage.Stage;
 
 public class MainCalculette extends Application{
 	
-	
-	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Application.launch();
@@ -24,21 +22,11 @@ public class MainCalculette extends Application{
 		GUI ihm = new GUI();
 		Accumulateur accu = new Accumulateur();
 		Controleur controleur = new Controleur(accu, ihm);
-		
 		ihm.initialiser();
+		controleur.actionsBoutons(ihm, accu);
 
-        /*Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-        
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        primaryStage.setScene(new Scene(root, 300, 250)); */
 		}
      
 	
 }
+
