@@ -20,7 +20,7 @@ public interface IAccumulateur {
 	
 	public void backspace();
 	
-	public void accumuler(char character);
+	public String accumuler(String character);
 	
 	public void reset();
 	
