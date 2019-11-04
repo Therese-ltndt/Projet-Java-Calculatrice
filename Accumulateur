@@ -14,19 +14,18 @@ public class Accumulateur implements IAccumulateur {
 		nombre = 0;
 	}
 	
-	public double StringtoDouble(String s) {
-		double nb = Double.parseDouble(s) ;
-		return nb;
-	}
-	
+	//Entre dans la mémoire (pile) le nombre tapé
 	public void push() {
 		memory.push(nombre);
 	}
 	
+	//Supprime le dernier élément de la pile
 	public void drop(){
 		double a = memory.pop();
 	}
 	
+	
+	//Inverse l'ordre des deux derniers éléments de la pile
 	public void swap() {
 		double d1 = memory.pop();
 		double d2= memory.pop();
@@ -34,6 +33,8 @@ public class Accumulateur implements IAccumulateur {
 		memory.push(d2);
 	}
 	
+	
+	//additionne les deux derniers nombres saisis
 	public void add() {
 		double d1 = memory.pop();
 		double d2= memory.pop();
@@ -41,6 +42,8 @@ public class Accumulateur implements IAccumulateur {
 		push();
 	}
 	
+	
+	//soustraie le dernier élément saisi à l'avant-dernier
 	public void sub() {
 		double d1 = memory.pop();
 		double d2= memory.pop();
@@ -48,6 +51,8 @@ public class Accumulateur implements IAccumulateur {
 		push();
 	}
 	
+	
+	//Mutiplie les deux derniers nombres saisis
 	public void mult() {
 		double d1 = memory.pop();
 		double d2= memory.pop();
@@ -55,18 +60,21 @@ public class Accumulateur implements IAccumulateur {
 		push();
 	}
 	
+	//Divise l'avant dernier élément saisi par le premier
 	public void div() {
 		double d1 = memory.pop();
 		double d2= memory.pop();
 		nombre = d2 / d1;
 		push();
 	}
-	
+
+	//Transforme un nombre saisi en son opposé
 	public void neg() {
-		double d1 = memory.pop();
-		nombre = -d1;
+		double d = memory.pop();
+		nombre = -d;
 		push();
 	}
+	
 	
 	public void backspace() {
 		int n = entry.length();
@@ -77,14 +85,40 @@ public class Accumulateur implements IAccumulateur {
 		}
 	}
 	
-	public void accumuler(char character ) {
+	public String accumuler(String character) {
 		entry += character;
+		return entry;
 	}
 	
 	public void reset() {
 		entry = "";
 		nombre = 0;
 		memory.clear();
+	}
+	
+	//getters et setters
+	public Pile getMemory() {
+		return memory;
+	}
+
+	public void setMemory(Pile memory) {
+		this.memory = memory;
+	}
+
+	public String getEntry() {
+		return entry;
+	}
+
+	public void setEntry(String entry) {
+		this.entry = entry;
+	}
+
+	public double getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(double nombre) {
+		this.nombre = nombre;
 	}
 	
 	
