@@ -2,9 +2,9 @@ package calculette_code;
 
 public interface IAccumulateur {
 
-	public void push(double d);
+	public void push();
 	
-	public void drop();
+	public double drop();
 	
 	public void swap();
 	
