@@ -2,7 +2,7 @@ package calculette_code;
 
 public interface IAccumulateur {
 
-	public void push();
+	public void push(double d);
 	
 	public void drop();
 	
@@ -23,5 +23,7 @@ public interface IAccumulateur {
 	public String accumuler(String character);
 	
 	public void reset();
+	
+	public double stringToDouble(String s);
 	
 }
