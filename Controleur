@@ -1,6 +1,9 @@
 package controleur;
+import java.util.concurrent.ThreadLocalRandom;
+
 import calculette_code.Accumulateur;
 import calculette_interface.GUI;
+import javafx.scene.control.Label;
 
 
 public class Controleur {
@@ -148,83 +151,229 @@ public class Controleur {
 		
 		ihm.getVirg().setOnAction(e -> {
 			if (etatCalcul==0) {
-				accu.setEntry(accu.accumuler("."));
-				ihm.getLabelp1().setText(accu.getEntry());
+				if (accu.getEntry() == "") { //si il n'y a pas de nombre avant la ",", on considère que c'est un 0
+					accu.setNombre(0);
+					accu.setEntry("0");
+					ihm.getLabelp1().setText("0");
+				}
+				if (ihm.getLabelp1().getText().indexOf('.') != -1) { //on vérifie que l'utilisateur ne rentre pas un nombre à deux virgules dans le label 1
+					ihm.getLabelerreur().setText("Une seule virgule, \n petit malin ! ;) "); //si c'est le cas on met une erreur
+					accu.backspace();
+					ihm.getLabelp1().setText(accu.getEntry()); //on efface la virgule en trop
+				}
+				else { //sinon on met la virgule
+					accu.setEntry(accu.accumuler("."));
+					ihm.getLabelp1().setText(accu.getEntry());
+				}
+				
 			}
-			else if (etatCalcul==1) {
-				accu.setEntry(accu.accumuler("."));
-				ihm.getLabelp2().setText(accu.getEntry());
-			}	
+			else if (etatCalcul==1) { //idem pour le label 2
+				if (accu.getEntry() == "") {
+					accu.setNombre(0);
+					accu.setEntry("0");
+					ihm.getLabelp2().setText("0");
+				}
+				if (ihm.getLabelp2().getText().indexOf('.') != -1) {
+					ihm.getLabelerreur().setText("Une seule virgule, \n petit malin ! ;) ");
+					accu.backspace();
+					ihm.getLabelp2().setText(accu.getEntry());
+				}
+				else {
+					accu.setEntry(accu.accumuler("."));
+					ihm.getLabelp2().setText(accu.getEntry());
+				}
+			}
 		});
 		
 		ihm.getEmpiler().setOnAction(e-> {
-			if (etatCalcul==0) {
-				accu.push(accu.stringToDouble(accu.getEntry()));
+			ihm.getLabelerreur().setText("");
+			if (accu.getEntry() == "") { //test erreur : valider deux fois de suite
+				ihm.getLabelerreur().setText("Valider une seule fois suffit !");
+			}
+			else if (etatCalcul==0) { 
+				accu.setNombre(accu.stringToDouble(accu.getEntry()));
+				accu.push();
 				accu.setEntry("");
 				etatCalcul=1;
 			}
 			else if (etatCalcul==1) {
-				accu.push(accu.stringToDouble(accu.getEntry()));
+				accu.setNombre(accu.stringToDouble(accu.getEntry()));
+				accu.push();
+				accu.setEntry("");
 				etatCalcul=2;
 			}
 		});
 		
 		ihm.getNettoyer().setOnAction(e-> {
-			if (etatCalcul==0) {
-			
-			}
-			else if (etatCalcul==1) {
-				etatCalcul=2;
-			}
+			ihm.getLabelp1().setText("");
+			ihm.getLabelp2().setText("");
+			accu.reset();
+			etatCalcul = 0;
 		});
 		
 		ihm.getAdd().setOnAction(e-> {
-			if (etatCalcul==0) {
-				System.out.println("Erreur, vous devez d'abord entrer la deuxième valeur du calcul");//sout ou autre ??
+			ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FF0000");
+			if (etatCalcul==0 || etatCalcul==1) {
+				ihm.getLabelerreur().setText("Erreur, vous devez d'abord \n entrer la deuxième valeur \n du calcul!");
 			}
-			else if (etatCalcul==1) {
-				
+			else {
+				accu.add();
+				Double res = accu.drop();
+				accu.setNombre(res);
+				accu.push();
+				String r = res.toString();
+				ihm.getLabelp1().setText(r);
+				ihm.getLabelp2().setText("");
+				etatCalcul = 1;
 			}
 		});
 		
 		ihm.getSous().setOnAction(e-> {
-			if (etatCalcul==0) {
-				
+			ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FF0000");
+			if (etatCalcul==0 || etatCalcul==1) {
+				ihm.getLabelerreur().setText("Erreur, vous devez d'abord \n entrer la deuxième valeur \n du calcul!");
 			}
-			else if (etatCalcul==1) {
-				etatCalcul=2;
+			else {
+				accu.sub();
+				Double res = accu.drop();
+				accu.setNombre(res);
+				accu.push();
+				String r = res.toString();
+				ihm.getLabelp1().setText(r);
+				ihm.getLabelp2().setText("");
+				etatCalcul = 1;
 			}
 		});
 		
 		ihm.getMult().setOnAction(e-> {
-			if (etatCalcul==0) {
-				
+			ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FF0000");
+			if (etatCalcul==0 || etatCalcul==1) {
+				ihm.getLabelerreur().setText("Erreur, vous devez d'abord \n entrer la deuxième valeur \n du calcul!");
 			}
-			else if (etatCalcul==1) {
-				etatCalcul=2;
+			else {
+				accu.mult();
+				Double res = accu.drop();
+				accu.setNombre(res);
+				accu.push();
+				String r = res.toString();
+				ihm.getLabelp1().setText(r);
+				ihm.getLabelp2().setText("");
+				etatCalcul = 1;
 			}
 		});
 		
 		ihm.getDiv().setOnAction(e-> {
-			if (etatCalcul==0) {
-				
+			ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FF0000");
+			double b = accu.stringToDouble(ihm.getLabelp2().getText());
+			if ( b == 0) {
+				ihm.getLabelerreur().setText("Voyons, tu ne peux pas \n diviser par zéro !!");
 			}
-			else if (etatCalcul==1) {
-				etatCalcul=2;
+			else if (etatCalcul==0 || etatCalcul==1) {
+				ihm.getLabelerreur().setText("Erreur, vous devez d'abord \n entrer la deuxième valeur \n du calcul!");
 			}
+			else {
+				accu.div();
+				Double res = accu.drop();
+				accu.setNombre(res);
+				accu.push();
+				String r = res.toString();
+				ihm.getLabelp1().setText(r);
+				ihm.getLabelp2().setText("");
+				etatCalcul = 1;
+			}
+			
 		});
 		
 		ihm.getNeg().setOnAction(e-> {
+			ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FF0000");
 			if (etatCalcul==0) {
-				
+				ihm.getLabelerreur().setText("Erreur, vous devez entrer \n un nombre pour le passer \n en négatif, puis valider.");
 			}
-			else if (etatCalcul==1) {
-				etatCalcul=2;
+			else if (etatCalcul==1){
+				accu.neg();
+				Double res = accu.drop();
+				accu.setNombre(res);
+				accu.push();
+				String r = res.toString();
+				ihm.getLabelp1().setText(r);
+			}
+			else if (etatCalcul == 2) {
+				accu.neg();
+				Double res = accu.drop();
+				accu.setNombre(res);
+				accu.push();
+				String r = res.toString();
+				ihm.getLabelp2().setText(r);
 			}
 		});
 		
+		ihm.getEchanger().setOnAction(e-> {
+			ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FF0000");
+			if (etatCalcul !=2) {
+				ihm.getLabelerreur().setText("Erreur, vous devez entrer \n deux nombres pour les \n échanger! ");
+			}
+			else {
+				accu.swap();
+				String s1 = ihm.getLabelp1().getText();
+				String s2 = ihm.getLabelp2().getText();
+				ihm.getLabelp1().setText(s2);
+				ihm.getLabelp2().setText(s1);
+			}
+		});
 		
-	
+		ihm.getAnnuler().setOnAction(e-> {
+			ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FF0000");
+			if (etatCalcul ==0) {
+				accu.backspace();
+				String l = ihm.getLabelp1().getText();
+				int n = l.length();
+				if (n > 1) {
+					String l2 = l.substring(0, n-1);
+					ihm.getLabelp1().setText(l2);}
+				else {
+					String l2 = "";
+					ihm.getLabelp1().setText(l2);
+				}
+			}
+			else if (etatCalcul ==1) {
+				accu.backspace();
+				String l = ihm.getLabelp2().getText();
+				int n = l.length();
+				if (n > 1) {
+					String l2 = l.substring(0, n-1);
+					ihm.getLabelp2().setText(l2);}
+				else {
+					String l2 = "";
+					ihm.getLabelp2().setText(l2);
+				}	
+			}
+			else {
+				ihm.getLabelerreur().setText("Vous ne pouvez plus \n modifier, déso");
+			}
+		});
+		
+		ihm.getRandom().setOnAction(e-> {
+			int n = ThreadLocalRandom.current().nextInt(0, 4); //création d'un nombre random entre 0 et 3
+			switch (n) {
+			case 0 :
+				ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FFC0CB");
+				ihm.getLabelerreur().setText("Fais de beaux calculs, \n ma petite licorne <3");
+				break;
+			case 1 :
+				ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#C541C5");
+				ihm.getLabelerreur().setText("Bravo, vous venez de gagner \n un iPhoneX!");
+				break;
+			case 2 :
+				ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#00CED1");
+				ihm.getLabelerreur().setText("Eh vous avez vu? \n On a mis une licorne <3");
+				break;
+			case 3 :
+				ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill : #32CD32");
+				ihm.getLabelerreur().setText("Trop fatiguant de travailler... \n ZzzzZ");
+				break;
+			}
+			
+ 		});
 	}
 	
 		
