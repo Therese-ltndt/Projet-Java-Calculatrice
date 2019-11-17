@@ -1,13 +1,10 @@
 package calculette_code;
 
-import controleur.Controleur;
-
 public class Accumulateur implements IAccumulateur {
 
 	Pile memory;
 	String entry ;
 	double nombre; //resultat de l'opération (addition, soustraction...) que l'on réinitialise à chaque fin d'opération OU lecture de la chaine string
-	//Controleur controleur; est ce qu'on en a besoin?
 	
 	public Accumulateur() {
 		memory = new Pile();
@@ -16,6 +13,10 @@ public class Accumulateur implements IAccumulateur {
 	}
 	
 	public double stringToDouble(String s) {
+		if (s =="") {
+			return 1; //pour gérer l'erreur de la méthode diviser, dans le premier if, pour que le stringtodouble n'ait pas " " en string d'entré. 
+			//1 est le neutre de la division, donc ça retournera l'erreur classique
+		}
 		return Double.parseDouble(s);
 	}
 	
@@ -65,7 +66,7 @@ public class Accumulateur implements IAccumulateur {
 		push();
 	}
 	
-	//Divise l'avant dernier élément saisi par le premier
+	//Divise l'avant dernier élément saisi par le dernier
 	public void div() {
 		double d1 = memory.pop();
 		double d2= memory.pop();
@@ -81,7 +82,7 @@ public class Accumulateur implements IAccumulateur {
 	}
 	
 	
-	public void backspace() {
+	public void backspace() { //équivalent de la touche "effacer" sur un clavier
 		int n = entry.length();
 		if (n >= 2 ) {
 			String a = entry.substring(0, n-1);
@@ -93,25 +94,18 @@ public class Accumulateur implements IAccumulateur {
 		
 	}
 	
-	public String accumuler(String character) {
+	public String accumuler(String character) { //concatene une chaine de caractères pour ensuite la transformer en nombre
 		entry += character;
 		return entry;
 	}
 	
-	public void reset() {
+	public void reset() { //efface toutes les données de la pile et de l'accumulateur
 		entry = "";
 		nombre = 0;
 		memory.clear();
 	}
 	
 	//getters et setters
-	public Pile getMemory() {
-		return memory;
-	}
-
-	public void setMemory(Pile memory) {
-		this.memory = memory;
-	}
 
 	public String getEntry() {
 		return entry;
