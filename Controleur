@@ -3,14 +3,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import calculette_code.Accumulateur;
 import calculette_interface.GUI;
-import javafx.scene.control.Label;
-
 
 public class Controleur {
 	
 	GUI gui;
 	Accumulateur accumulateur;
-	int etatCalcul; //Variable = 0 si l'utilisateur entre le premier nombre du calcul, 1 si c'est le deuxième (après l'opération OK)
+	int etatCalcul; //Variable = 0 si l'utilisateur entre le premier nombre du calcul, 1 si c'est le deuxième (après l'opération OK), 2 si les deux nombres sont entrés
 	
 	public Controleur(Accumulateur accu, GUI ihm) {
 		gui = ihm;
@@ -19,19 +17,23 @@ public class Controleur {
 	}
 	
 	public void actionsBoutons(GUI ihm, Accumulateur accu) {
+		
+		//action du bouton zéro
 		ihm.getZero().setOnAction(e -> {
-			if (etatCalcul==0) {
-				accu.setNombre(0);
+			if (etatCalcul==0) { //si on entre le premier nombre
+				accu.setNombre(0); //pour l'accumulateur
 				accu.setEntry(accu.accumuler("0"));
-				ihm.getLabelp1().setText(accu.getEntry());
+				ihm.getLabelp1().setText(accu.getEntry()); //pour l'ihm
 			}
-			else if (etatCalcul==1) {
-				accu.setNombre(0);
+			else if (etatCalcul==1) { //si on entre le deuxième nombre
+				accu.setNombre(0); //pour l'accumulateur
 				accu.setEntry(accu.accumuler("0"));
-				ihm.getLabelp2().setText(accu.getEntry());
+				ihm.getLabelp2().setText(accu.getEntry()); //pour l'ihm
 			}	
 		});
 		
+		
+		// de même pour les autres chiffres
 		ihm.getUn().setOnAction(e -> {
 			if (etatCalcul==0) {
 				accu.setNombre(1);
@@ -149,6 +151,8 @@ public class Controleur {
 			}	
 		});
 		
+		
+		//action du bouton virgule
 		ihm.getVirg().setOnAction(e -> {
 			if (etatCalcul==0) {
 				if (accu.getEntry() == "") { //si il n'y a pas de nombre avant la ",", on considère que c'est un 0
@@ -185,12 +189,13 @@ public class Controleur {
 			}
 		});
 		
+		//action du bouton OK 
 		ihm.getEmpiler().setOnAction(e-> {
-			ihm.getLabelerreur().setText("");
+			ihm.getLabelerreur().setText(""); //par défaut quand on clique sur le bouton OK on nettoie les erreurs
 			if (accu.getEntry() == "") { //test erreur : valider deux fois de suite
 				ihm.getLabelerreur().setText("Valider une seule fois suffit !");
 			}
-			else if (etatCalcul==0) { 
+			else if (etatCalcul==0) { //permet de push dans la pile
 				accu.setNombre(accu.stringToDouble(accu.getEntry()));
 				accu.push();
 				accu.setEntry("");
@@ -211,23 +216,26 @@ public class Controleur {
 			etatCalcul = 0;
 		});
 		
+		//action du bouton +
 		ihm.getAdd().setOnAction(e-> {
-			ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FF0000");
+			//par défaut on réinitialise le style du label erreur
+			ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FF0000"); 
 			if (etatCalcul==0 || etatCalcul==1) {
 				ihm.getLabelerreur().setText("Erreur, vous devez d'abord \n entrer la deuxième valeur \n du calcul!");
 			}
 			else {
-				accu.add();
-				Double res = accu.drop();
-				accu.setNombre(res);
+				accu.add(); //on additionne
+				Double res = accu.drop(); //on stocke le résultat
+				accu.setNombre(res); //on le met dans nombre pour ensuite pouvoir le ré-emplier (push)
 				accu.push();
-				String r = res.toString();
-				ihm.getLabelp1().setText(r);
-				ihm.getLabelp2().setText("");
-				etatCalcul = 1;
+				String r = res.toString(); //on le transforme en string pour l'afficher dans l'ihm
+				ihm.getLabelp1().setText(r); //on l'affiche sur le label de gauche
+				ihm.getLabelp2().setText(""); //on nettoie le label de droite
+				etatCalcul = 1; //le résultat de l'addition est réutilisé dans le calcul suivant
 			}
 		});
 		
+		//pareil que le bouton +
 		ihm.getSous().setOnAction(e-> {
 			ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FF0000");
 			if (etatCalcul==0 || etatCalcul==1) {
@@ -245,6 +253,7 @@ public class Controleur {
 			}
 		});
 		
+		//pareil que le bouton +
 		ihm.getMult().setOnAction(e-> {
 			ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FF0000");
 			if (etatCalcul==0 || etatCalcul==1) {
@@ -262,16 +271,16 @@ public class Controleur {
 			}
 		});
 		
+		//action du bouton /
 		ihm.getDiv().setOnAction(e-> {
 			ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FF0000");
-			double b = accu.stringToDouble(ihm.getLabelp2().getText());
-			if ( b == 0) {
+			if ( accu.stringToDouble(ihm.getLabelp2().getText()) == 0) { //erreur : division par 0 !
 				ihm.getLabelerreur().setText("Voyons, tu ne peux pas \n diviser par zéro !!");
 			}
 			else if (etatCalcul==0 || etatCalcul==1) {
 				ihm.getLabelerreur().setText("Erreur, vous devez d'abord \n entrer la deuxième valeur \n du calcul!");
 			}
-			else {
+			else if (etatCalcul ==2){
 				accu.div();
 				Double res = accu.drop();
 				accu.setNombre(res);
@@ -284,6 +293,8 @@ public class Controleur {
 			
 		});
 		
+		
+		//action du bouton +/- 
 		ihm.getNeg().setOnAction(e-> {
 			ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FF0000");
 			if (etatCalcul==0) {
@@ -307,25 +318,27 @@ public class Controleur {
 			}
 		});
 		
+		//action du bouton échanger
 		ihm.getEchanger().setOnAction(e-> {
 			ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FF0000");
 			if (etatCalcul !=2) {
 				ihm.getLabelerreur().setText("Erreur, vous devez entrer \n deux nombres pour les \n échanger! ");
 			}
 			else {
-				accu.swap();
-				String s1 = ihm.getLabelp1().getText();
+				accu.swap(); //pour l'accumulateur
+				String s1 = ihm.getLabelp1().getText(); //pour l'ihm on échange le texte des deux labels
 				String s2 = ihm.getLabelp2().getText();
 				ihm.getLabelp1().setText(s2);
 				ihm.getLabelp2().setText(s1);
 			}
 		});
 		
+		//bouton effacer
 		ihm.getAnnuler().setOnAction(e-> {
 			ihm.getLabelerreur().setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FF0000");
 			if (etatCalcul ==0) {
 				accu.backspace();
-				String l = ihm.getLabelp1().getText();
+				String l = ihm.getLabelp1().getText(); //même code que le backspace mais pour l'ihm
 				int n = l.length();
 				if (n > 1) {
 					String l2 = l.substring(0, n-1);
@@ -348,10 +361,11 @@ public class Controleur {
 				}	
 			}
 			else {
-				ihm.getLabelerreur().setText("Vous ne pouvez plus \n modifier, déso");
+				ihm.getLabelerreur().setText("Vous ne pouvez plus \n modifier, déso"); //si on a déjà validé les deux nombres, on ne peut plus les modifier...
 			}
 		});
 		
+		//bouton licorne : surprise !
 		ihm.getRandom().setOnAction(e-> {
 			int n = ThreadLocalRandom.current().nextInt(0, 4); //création d'un nombre random entre 0 et 3
 			switch (n) {
