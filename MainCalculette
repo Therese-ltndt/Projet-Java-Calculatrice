@@ -2,13 +2,7 @@ package calculette_code;
 
 import calculette_interface.GUI;
 import controleur.Controleur;
-import javafx.scene.control.Button;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene; 
-import javafx.scene.control.Label; 
-import javafx.scene.layout.StackPane; 
 import javafx.stage.Stage;
 
 public class MainCalculette extends Application{
@@ -22,8 +16,8 @@ public class MainCalculette extends Application{
 		GUI ihm = new GUI();
 		Accumulateur accu = new Accumulateur();
 		Controleur controleur = new Controleur(accu, ihm);
-		ihm.initialiser();
-		controleur.actionsBoutons(ihm, accu);
+		ihm.initialiser(); //initilisation de l'interface graphique 
+		controleur.actionsBoutons(ihm, accu); //lien entre les boutons et les actions entrées par l'utilisateur
 
 		}
      
