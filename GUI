@@ -1,11 +1,7 @@
 package calculette_interface;
 
 import javafx.scene.control.Button;
-import java.util.List;
 
-import calculette_code.Accumulateur;
-import controleur.Controleur;
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene; 
@@ -13,13 +9,10 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class GUI {
 
-	//Controleur controleur; à voir si on en a besoin //le controleur va faire le lien entre le GUI et l'accumulateur
 	GridPane grille;
 	Stage stage;
 	Scene scene;
@@ -48,21 +41,15 @@ public class GUI {
 	//on crée les labels (ie les zones de textes).
 	Label labelp1 ; //push n°1 et stock du résultat
 	Label labelp2 ; //push n°2
-	Label labelerreur;
+	Label labelerreur; //afficher les erreurs
 	
 	Button random;
 
 	public GUI() {
-		//controleur = new Controleur();
 		grille = new GridPane();
 		stage = new Stage();
 		scene = new Scene(grille);
 		
-		ImageView imageView = new ImageView (new Image("https://www.adzif.biz/boutique/images_produits/e0301-z.jpg"));
-		imageView.setFitHeight(66);
-		imageView.setFitWidth(66);
-		random = new Button("", imageView);
-		random.setStyle("-fx-pref-width: 80px; -fx-pref-height: 80px; -fx-font-size: 18 arial; ");
 		//on crée les boutons 
 		zero = new Button("0"); 
 		zero.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial; ");
@@ -96,34 +83,41 @@ public class GUI {
 		div.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial; -fx-text-fill :#1E90FF;");
 		virg = new Button(".");
 		virg.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 18 arial; -fx-text-fill :#1E90FF;");
-		neg = new Button("+/-"); //change le signe
+		neg = new Button("+/-"); 
 		neg.setStyle("-fx-pref-width: 40px; -fx-pref-height: 40px; -fx-font-size: 12 arial; -fx-text-fill :#1E90FF;");
 		
-		empiler = new Button("OK"); //permet de push sur la pile le nombre écrit
+		empiler = new Button("OK"); 
 		empiler.setStyle("-fx-pref-width: 160px; -fx-pref-height: 20px; -fx-font-size: 14 arial; -fx-text-fill :#0000FF");
-		nettoyer = new Button("Nettoyer"); //reset de la calculette
+		nettoyer = new Button("Nettoyer"); 
 		nettoyer.setStyle("-fx-pref-width: 160px; -fx-pref-height: 20px; -fx-font-size: 14 arial; -fx-text-fill :#0000FF");
-		echanger = new Button("Echanger"); //swap les deux derniers push
+		echanger = new Button("Echanger");
 		echanger.setStyle("-fx-pref-width: 80px; -fx-pref-height: 20px; -fx-font-size: 14 arial; -fx-text-fill :#0000FF");
 		annuler = new Button("Effacer");
 		annuler.setStyle("-fx-pref-width: 80px; -fx-pref-height: 20px; -fx-font-size: 14 arial;-fx-text-fill :#0000FF");
+		
 		//on crée les labels (ie les zones de textes).
 		//pour l'instant ils sont vides, nous pourrons mettre le texte voulu plus tard grâce à setText(string)
-		
-		labelp1 = new Label(""); //push n°1
+		labelp1 = new Label(""); 
 		labelp1.setStyle("-fx-pref-width: 80px; -fx-pref-height: 40px; -fx-font-size: 14 arial; -fx-border-color: #000000; -fx-border-width: 0.25px;");//label encadré
-		labelp2 = new Label(""); //push n°2
+		labelp2 = new Label(""); 
 		labelp2.setStyle("-fx-pref-width: 80px; -fx-pref-height: 40px; -fx-font-size: 14 arial; -fx-border-color: #000000; -fx-border-width: 0.25px;");
 		labelerreur = new Label("");
 		labelerreur.setStyle("-fx-pref-width: 160px; -fx-pref-height: 80px; -fx-font-size: 12 arial; -fx-text-fill :#FF0000"); //label en rouge
-		labelerreur.setAlignment(Pos.CENTER);
+		labelerreur.setAlignment(Pos.CENTER); //on essaye de centrer le texte (ne fonctionne pas avec les retours à la ligne ... :'( )
+		
+		//création du visuel du bouton licorne
+		ImageView imageView = new ImageView (new Image("https://www.adzif.biz/boutique/images_produits/e0301-z.jpg"));
+		imageView.setFitHeight(66);
+		imageView.setFitWidth(66);
+		random = new Button("", imageView);
+		random.setStyle("-fx-pref-width: 80px; -fx-pref-height: 80px; -fx-font-size: 18 arial; ");
 		
 	}
 	
 	//maintenant on a tous nos attributs
 	
 	public void initialiser() { //initialisation de l'interface
-		stage.setTitle("Calculatrice");
+		stage.setTitle("La best calculatrice des 2IA");
 		grille.setPadding(new Insets (10, 50, 10, 50)); //taille de la fenêtre par rapport à la grille (espacement entre grille et fenetre)
 		
 		//on ajoute tous les boutons au gridpane
@@ -151,37 +145,17 @@ public class GUI {
 		grille.add(empiler, 0, 6, 4 ,1); //le bouton a une envergure de 4 colonnes x 1 ligne
 		grille.add(nettoyer, 0, 7, 4 ,1); //le bouton a une envergure de 4 colonnes x 1 ligne
 		grille.add(labelerreur, 0, 8, 4, 1);
-		grille.getChildren().addAll(); // je ne sais pas s'il faut le mettre ni à quoi ça sert vraiment lol (les children de la grille c'est les boutons apparemment
-		afficher();
+		grille.getChildren().addAll(); // on ajoute tous les boutons au gridpane
+		afficher(); //affichage de l'ihm
 		} 
 	
 	
-	public void afficher() {
+	public void afficher() { //afficher l'ihm
 		stage.setScene(scene);
 		stage.show();
 	}
 	
 	//getters et setters
-	public GridPane getGrille() {
-		return grille;
-	}
-
-	public void setGrille(GridPane grille) {
-		this.grille = grille;
-	}
-
-	public Stage getStage() {
-		return stage;
-	}
-
-	public void setStage(Stage stage) {
-		this.stage = stage;
-	}
-
-	public Scene getScene() {
-		return scene;
-	}
-
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
@@ -190,154 +164,78 @@ public class GUI {
 		return zero;
 	}
 
-	public void setZero(Button zero) {
-		this.zero = zero;
-	}
-
 	public Button getUn() {
 		return un;
-	}
-
-	public void setUn(Button un) {
-		this.un = un;
 	}
 
 	public Button getDeux() {
 		return deux;
 	}
 
-	public void setDeux(Button deux) {
-		this.deux = deux;
-	}
-
 	public Button getTrois() {
 		return trois;
-	}
-
-	public void setTrois(Button trois) {
-		this.trois = trois;
 	}
 
 	public Button getQuatre() {
 		return quatre;
 	}
 
-	public void setQuatre(Button quatre) {
-		this.quatre = quatre;
-	}
-
 	public Button getCinq() {
 		return cinq;
-	}
-
-	public void setCinq(Button cinq) {
-		this.cinq = cinq;
 	}
 
 	public Button getSix() {
 		return six;
 	}
 
-	public void setSix(Button six) {
-		this.six = six;
-	}
-
 	public Button getSept() {
 		return sept;
-	}
-
-	public void setSept(Button sept) {
-		this.sept = sept;
 	}
 
 	public Button getHuit() {
 		return huit;
 	}
 
-	public void setHuit(Button huit) {
-		this.huit = huit;
-	}
-
 	public Button getNeuf() {
 		return neuf;
-	}
-
-	public void setNeuf(Button neuf) {
-		this.neuf = neuf;
 	}
 
 	public Button getAnnuler() {
 		return annuler;
 	}
 
-	public void setAnnuler(Button annuler) {
-		this.annuler = annuler;
-	}
-
 	public Button getAdd() {
 		return add;
-	}
-
-	public void setAdd(Button add) {
-		this.add = add;
 	}
 
 	public Button getSous() {
 		return sous;
 	}
 
-	public void setSous(Button sous) {
-		this.sous = sous;
-	}
-
 	public Button getMult() {
 		return mult;
-	}
-
-	public void setMult(Button mult) {
-		this.mult = mult;
 	}
 
 	public Button getDiv() {
 		return div;
 	}
 
-	public void setDiv(Button div) {
-		this.div = div;
-	}
-
 	public Button getVirg() {
 		return virg;
-	}
-
-	public void setVirg(Button virg) {
-		this.virg = virg;
 	}
 
 	public Button getNeg() {
 		return neg;
 	}
 
-	public void setNeg(Button neg) {
-		this.neg = neg;
-	}
-
 	public Button getEmpiler() {
 		return empiler;
-	}
-
-	public void setEmpiler(Button empiler) {
-		this.empiler = empiler;
 	}
 
 	public Button getNettoyer() {
 		return nettoyer;
 	}
-	
-	public void setNettoyer(Button nettoyer) {
-		this.nettoyer = nettoyer;
-	}
-	
+
 	public Button getRandom() {
 		return random;
 	}
@@ -345,31 +243,15 @@ public class GUI {
 		return echanger;
 	}
 
-	public void setEchanger(Button echanger) {
-		this.echanger = echanger;
-	}
-
 	public Label getLabelp1() {
 		return labelp1;
-	}
-
-	public void setLabelp1(Label labelp1) {
-		this.labelp1 = labelp1;
 	}
 
 	public Label getLabelp2() {
 		return labelp2;
 	}
 
-	public void setLabelp2(Label labelp2) {
-		this.labelp2 = labelp2;
-	}
-	
 	public Label getLabelerreur() {
 		return labelerreur;
-	}
-
-	public void setLabelerreur(Label labelerreur) {
-		this.labelerreur = labelerreur;
 	}
 }
